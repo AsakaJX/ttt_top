@@ -1,0 +1,16 @@
+/* Figtree */
+/* @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'); */
+
+@font-face {
+  font-family: 'slabregular';
+  src: url('arbutusslab-regular-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'sinkin_sans';
+  src: url('sinkinsans-400regular-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
