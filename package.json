@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "modern-normalize": "^3.0.1"
   }

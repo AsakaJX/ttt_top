@@ -1,13 +1,14 @@
 function Gameboard(size = 3) {
   let line = [];
   for (let i = 0; i < size; i++) {
-    line.push(i);
+    // line.push(i);
+    line.push(null);
   }
 
   this.board = [];
   for (let i = 0; i < size; i++) {
-    line = line.map((x) => x + i);
-    this.board.push(line);
+    // line = line.map((x) => x + i);
+    this.board.push([...line]);
   }
 
   this.getVertical = function (column) {
@@ -39,7 +40,7 @@ function Gameboard(size = 3) {
   };
 }
 
-function Player(name, mark) {
+export function Player(name, mark) {
   this.name = name;
   this.mark = mark;
 }
@@ -48,13 +49,10 @@ function Players(player1, player2) {
   this.playersArray = [player1, player2];
 }
 
-const game = (function () {
+export const game = function (player1, player2) {
   // Assigned here for testing purposes
   const _boardInstance = new Gameboard();
-  const _playersInstance = new Players(
-    new Player('asaka', 'x'),
-    new Player('eblan', 'o')
-  );
+  const _playersInstance = new Players(player1, player2);
 
   // 0 - first player
   let currentPlayer = 0;
@@ -68,7 +66,10 @@ const game = (function () {
           .getVertical(i)
           .every(
             (mark) => mark === _playersInstance.playersArray[currentPlayer].mark
-          )
+          ) ||
+        _boardInstance.board[i].every(
+          (x) => x === _playersInstance.playersArray[currentPlayer].mark
+        )
       ) {
         return true;
       }
@@ -114,7 +115,7 @@ const game = (function () {
       _playersInstance.playersArray[currentPlayer].mark
     );
 
-    console.log(game._boardInstance.board);
+    console.log(this._boardInstance.board);
 
     if (isWinningPosition()) {
       winner = _playersInstance.playersArray[currentPlayer];
@@ -134,12 +135,4 @@ const game = (function () {
     roundCounter,
     makeMove,
   };
-})();
-
-// test game
-game.makeMove(0, 0);
-game.makeMove(0, 1);
-game.makeMove(1, 0);
-game.makeMove(1, 1);
-game.makeMove(2, 0);
-game.makeMove(2, 1);
+};
