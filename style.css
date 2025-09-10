@@ -1,0 +1,92 @@
+:root {
+  font-size: 16px;
+
+  --shadow: 0 0 15px 0 rgb(0, 0, 0, 0.05);
+
+  --background: whitesmoke;
+  --foreground: white;
+  --text: rgb(65, 65, 65);
+  --accent: royalblue;
+  --accent-background: rgb(253, 253, 255);
+}
+
+* {
+  font-family: 'Figtree', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  color: var(--text);
+}
+
+body {
+  background-color: var(--background);
+
+  min-height: 100vh;
+
+  margin: 0 10%;
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+}
+
+body > * {
+  padding: 1rem;
+}
+
+header,
+footer {
+  justify-self: center;
+}
+
+h1 {
+  color: var(--accent);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  background-color: var(--foreground);
+
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 1rem;
+  border-radius: 0.8rem;
+}
+
+#game {
+  width: 40%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+}
+
+#status-bar {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-evenly;
+}
+
+#gameboard {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+
+  box-shadow: var(--shadow);
+
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+
+  background-color: var(--accent-background);
+}
+
+a {
+  color: var(--accent);
+}

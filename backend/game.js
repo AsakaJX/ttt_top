@@ -1,3 +1,9 @@
+const DEBUG = false;
+
+if (DEBUG) {
+  console.log = function () {};
+}
+
 function Gameboard(size = 3) {
   let line = [];
   for (let i = 0; i < size; i++) {
@@ -49,9 +55,9 @@ function Players(player1, player2) {
   this.playersArray = [player1, player2];
 }
 
-export const game = function (player1, player2) {
+export const game = function (player1, player2, gameBoardSize = 3) {
   // Assigned here for testing purposes
-  const _boardInstance = new Gameboard();
+  const _boardInstance = new Gameboard(gameBoardSize);
   const _playersInstance = new Players(player1, player2);
 
   // 0 - first player
