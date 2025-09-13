@@ -1,6 +1,6 @@
-const DEBUG = false;
+const DEBUG = true;
 
-if (DEBUG) {
+if (!DEBUG) {
   console.log = function () {};
 }
 
@@ -55,26 +55,42 @@ function Players(player1, player2) {
   this.playersArray = [player1, player2];
 }
 
-export const game = function (player1, player2, gameBoardSize = 3) {
+export function Game(player1, player2, gameBoardSize = 3) {
+  const MIN_GAMEBOARD_SIZE = 3;
+  const MAX_GAMEBOARD_SIZE = 7;
+
+  // GameboardSize safe-guards
+  if (gameBoardSize < MIN_GAMEBOARD_SIZE) {
+    gameBoardSize = MIN_GAMEBOARD_SIZE;
+  }
+
+  if (gameBoardSize > MAX_GAMEBOARD_SIZE) {
+    gameBoardSize = MAX_GAMEBOARD_SIZE;
+  }
+
   // Assigned here for testing purposes
-  const _boardInstance = new Gameboard(gameBoardSize);
-  const _playersInstance = new Players(player1, player2);
+  this.boardInstance = new Gameboard(gameBoardSize);
+  this.playersInstance = new Players(player1, player2);
 
   // 0 - first player
-  let currentPlayer = 0;
-  let winner = null;
-  let roundCounter = 0;
+  this.currentPlayerIndex = 0;
+  this.winner = null;
+  this.roundCounter = 0;
 
-  function isWinningPosition() {
-    for (let i = 0; i < _boardInstance.board.length; i++) {
+  this.isWinningPosition = function () {
+    for (let i = 0; i < this.boardInstance.board.length; i++) {
       if (
-        _boardInstance
+        this.boardInstance
           .getVertical(i)
           .every(
-            (mark) => mark === _playersInstance.playersArray[currentPlayer].mark
+            (mark) =>
+              mark ===
+              this.playersInstance.playersArray[this.currentPlayerIndex].mark
           ) ||
-        _boardInstance.board[i].every(
-          (x) => x === _playersInstance.playersArray[currentPlayer].mark
+        this.boardInstance.board[i].every(
+          (x) =>
+            x ===
+            this.playersInstance.playersArray[this.currentPlayerIndex].mark
         )
       ) {
         return true;
@@ -82,63 +98,61 @@ export const game = function (player1, player2, gameBoardSize = 3) {
     }
 
     if (
-      _boardInstance
+      this.boardInstance
         .getDiagonalLeft()
         .every(
-          (mark) => mark === _playersInstance.playersArray[currentPlayer].mark
+          (mark) =>
+            mark ===
+            this.playersInstance.playersArray[this.currentPlayerIndex].mark
         ) ||
-      _boardInstance
+      this.boardInstance
         .getDiagonalRight()
         .every(
-          (mark) => mark === _playersInstance.playersArray[currentPlayer].mark
+          (mark) =>
+            mark ===
+            this.playersInstance.playersArray[this.currentPlayerIndex].mark
         )
     ) {
       return true;
     }
 
     return false;
-  }
+  };
 
-  const makeMove = function (line, position) {
-    if (winner !== null) {
-      console.log(`Player ${winner.name} has already won!`);
+  this.makeMove = function (line, position) {
+    if (this.winner !== null) {
+      console.log(`Player ${this.winner.name} has already won!`);
       return null;
     }
 
     if (
-      _boardInstance.board[line][position] ===
-        _playersInstance.playersArray[+Boolean(currentPlayer)].mark ||
-      _boardInstance.board[line][position] ===
-        _playersInstance.playersArray[+!Boolean(currentPlayer)].mark
+      this.boardInstance.board[line][position] ===
+        this.playersInstance.playersArray[+Boolean(this.currentPlayerIndex)]
+          .mark ||
+      this.boardInstance.board[line][position] ===
+        this.playersInstance.playersArray[+!Boolean(this.currentPlayerIndex)]
+          .mark
     ) {
       console.log(`can't place marker here`);
       return null;
     }
 
-    _boardInstance.placeMarker(
+    this.boardInstance.placeMarker(
       line,
       position,
-      _playersInstance.playersArray[currentPlayer].mark
+      this.playersInstance.playersArray[this.currentPlayerIndex].mark
     );
 
-    console.log(this._boardInstance.board);
+    // console.log(this);
+    // console.log(_boardInstance.board);
 
-    if (isWinningPosition()) {
-      winner = _playersInstance.playersArray[currentPlayer];
+    this.roundCounter += 1;
+    if (this.isWinningPosition()) {
+      this.winner = this.playersInstance.playersArray[this.currentPlayerIndex];
 
-      console.log(`Player ${winner.name} wins!`);
+      console.log(`Player ${this.winner.name} wins!`);
+      return;
     }
-
-    currentPlayer = +!Boolean(currentPlayer);
-    roundCounter += 1;
+    this.currentPlayerIndex = +!Boolean(this.currentPlayerIndex);
   };
-
-  return {
-    _boardInstance,
-    _playersInstance,
-    currentPlayer,
-    winner,
-    roundCounter,
-    makeMove,
-  };
-};
+}

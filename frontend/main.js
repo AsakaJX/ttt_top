@@ -1,16 +1,84 @@
-import { game as gameSingleton, Player } from '../backend/game.js';
+import { Game, Player } from '../backend/game.js';
 
-let boardSize = 3;
-const game = gameSingleton(
-  new Player('asaka', 'x'),
-  new Player('random', 'o'),
+const boardSize = 3;
+const game = new Game(
+  new Player('player 1', 'x'),
+  new Player('player 2', 'o'),
   boardSize
 );
 
-// test game
-game.makeMove(0, 0);
-game.makeMove(1, 0);
-game.makeMove(1, 1);
-game.makeMove(2, 0);
-game.makeMove(2, 2);
-game.makeMove(1, 2);
+// Player name
+
+const player1Name = document.querySelector('#player-1-name');
+const player2Name = document.querySelector('#player-2-name');
+
+// Default player names
+player1Name.value = 'player 1';
+player2Name.value = 'player 2';
+
+player1Name.addEventListener('input', (event) => {
+  game.playersInstance.playersArray[0].name = event.target.value;
+});
+
+player2Name.addEventListener('input', (event) => {
+  game.playersInstance.playersArray[1].name = event.target.value;
+});
+
+// Drawing cells
+
+const gameboard = document.querySelector('#gameboard');
+let gameboardTemplateString = '';
+game.boardInstance.board.map(() => {
+  gameboardTemplateString += '1fr ';
+});
+document.styleSheets[1].insertRule(
+  `#gameboard { grid-template: ${gameboardTemplateString} / ${gameboardTemplateString}; }`
+);
+
+reDrawBoard();
+
+function reDrawBoard() {
+  document.querySelectorAll('.gameboard-cell').forEach((item) => item.remove());
+
+  let lineCounter = 0;
+  for (const line of game.boardInstance.board) {
+    let cellCounter = 0;
+    for (const item of line) {
+      const cell = document.createElement('div');
+      cell.textContent = item;
+      cell.setAttribute('class', 'gameboard-cell');
+      cell.setAttribute('id', `${lineCounter}-${cellCounter}`);
+      cell.addEventListener('click', handleCellClick);
+      gameboard.appendChild(cell);
+      cellCounter++;
+    }
+    lineCounter++;
+  }
+}
+
+function updateGameResult(text) {
+  const result = document.querySelector('#game-result');
+  result.textContent = text;
+}
+
+function handleCellClick(event) {
+  const target = event.target;
+  const [lineNumber, cellNumber] = target.getAttribute('id').split('-');
+
+  const makeMoveResult = game.makeMove(lineNumber, cellNumber);
+  reDrawBoard();
+
+  if (game.winner !== null && makeMoveResult !== null) {
+    const currentWinnerId = game.currentPlayerIndex + 1;
+    const playerCounterPlaceholder = document.querySelector(
+      `#player-${currentWinnerId}-score`
+    );
+
+    playerCounterPlaceholder.textContent =
+      Number(playerCounterPlaceholder.textContent) + 1;
+
+    updateGameResult(
+      `Player [${game.playersInstance.playersArray[game.currentPlayerIndex].name}] won!`
+    );
+  }
+}
