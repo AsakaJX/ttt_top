@@ -24,20 +24,38 @@ player2Name.addEventListener('input', (event) => {
   game.playersInstance.playersArray[1].name = event.target.value;
 });
 
-// Drawing cells
-
-const gameboard = document.querySelector('#gameboard');
-let gameboardTemplateString = '';
-game.boardInstance.board.map(() => {
-  gameboardTemplateString += '1fr ';
-});
-document.styleSheets[1].insertRule(
-  `#gameboard { grid-template: ${gameboardTemplateString} / ${gameboardTemplateString}; }`
+// Gameboard size
+const gameboardSizeControl = document.querySelector(
+  '#gameboard-controls-size-container > input'
 );
+
+gameboardSizeControl.addEventListener('input', (event) => {
+  game.boardInstance.updateSize(event.target.value);
+  game.boardInstance.initialize();
+  console.log(game.boardInstance.size);
+  game.initialize();
+  reDrawBoard();
+});
+
+// Drawing cells
 
 reDrawBoard();
 
 function reDrawBoard() {
+  const gameboard = document.querySelector('#gameboard');
+  let gameboardTemplateString = '';
+  game.boardInstance.board.map(() => {
+    gameboardTemplateString += '1fr ';
+  });
+
+  console.log(document.styleSheets[1].cssRules[0].cssText);
+  if (document.styleSheets[1].cssRules[0].cssText.includes('grid-template')) {
+    document.styleSheets[1].deleteRule(0);
+  }
+  document.styleSheets[1].insertRule(
+    `#gameboard { grid-template: ${gameboardTemplateString} / ${gameboardTemplateString}; }`
+  );
+
   document.querySelectorAll('.gameboard-cell').forEach((item) => item.remove());
 
   let lineCounter = 0;
@@ -93,6 +111,13 @@ function handleCellClick(event) {
     updateGameResult(
       `Player [${game.playersInstance.playersArray[game.currentPlayerIndex].name}] won!`
     );
+  }
+
+  if (
+    game.roundCounter === game.boardInstance.size * game.boardInstance.size &&
+    game.winner === null
+  ) {
+    updateGameResult('Tie!');
   }
 }
 

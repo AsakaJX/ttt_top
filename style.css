@@ -131,7 +131,8 @@ main {
   margin-bottom: 5%;
 }
 
-.player-name {
+.player-name,
+#gameboard-controls-size {
   border: 0;
   text-align: center;
   width: 25%;
@@ -140,7 +141,8 @@ main {
   border-radius: 3px;
 }
 
-.player-name:focus-visible {
+.player-name:focus-visible,
+#gameboard-controls-size:focus-visible {
   outline: 0;
   border-color: var(--other-highlighted);
 }
@@ -150,12 +152,13 @@ a {
 }
 
 #gameboard-controls {
-  margin-top: 2%;
-
   width: 100%;
 
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
 }
 
 #gameboard-controls-clear {
@@ -174,4 +177,15 @@ a {
 
 #gameboard-controls-clear:hover {
   cursor: pointer;
+}
+
+#gameboard-controls-size-container {
+  display: flex;
+  gap: 1rem;
+  width: 50%;
+}
+
+#gameboard-controls-size-container > input {
+  /* text-align: left; */
+  width: auto;
 }

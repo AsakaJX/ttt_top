@@ -5,15 +5,32 @@ if (!DEBUG) {
 }
 
 function Gameboard(size = 3) {
+  const MIN_GAMEBOARD_SIZE = 3;
+  const MAX_GAMEBOARD_SIZE = 7;
+
+  this.size = size;
+
+  this.updateSize = function (size) {
+    this.size = size;
+    // GameboardSize safe-guards
+    if (size < MIN_GAMEBOARD_SIZE) {
+      this.size = MIN_GAMEBOARD_SIZE;
+    }
+
+    if (size > MAX_GAMEBOARD_SIZE) {
+      this.size = MAX_GAMEBOARD_SIZE;
+    }
+  };
+
   this.initialize = function () {
     let line = [];
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < this.size; i++) {
       // line.push(i);
       line.push(null);
     }
 
     this.board = [];
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < this.size; i++) {
       // line = line.map((x) => x + i);
       this.board.push([...line]);
     }
@@ -23,7 +40,7 @@ function Gameboard(size = 3) {
 
   this.getVertical = function (column) {
     const result = [];
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < this.size; i++) {
       result.push(this.board[i][column]);
     }
     return result;
@@ -31,7 +48,7 @@ function Gameboard(size = 3) {
 
   this.getDiagonalLeft = function () {
     const result = [];
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < this.size; i++) {
       result.push(this.board[i][i]);
     }
     return result;
@@ -39,7 +56,7 @@ function Gameboard(size = 3) {
 
   this.getDiagonalRight = function () {
     const result = [];
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < this.size; i++) {
       result.push(this.board[i][this.board[i].length - 1 - i]);
     }
     return result;
@@ -60,18 +77,6 @@ function Players(player1, player2) {
 }
 
 export function Game(player1, player2, gameBoardSize = 3) {
-  const MIN_GAMEBOARD_SIZE = 3;
-  const MAX_GAMEBOARD_SIZE = 7;
-
-  // GameboardSize safe-guards
-  if (gameBoardSize < MIN_GAMEBOARD_SIZE) {
-    gameBoardSize = MIN_GAMEBOARD_SIZE;
-  }
-
-  if (gameBoardSize > MAX_GAMEBOARD_SIZE) {
-    gameBoardSize = MAX_GAMEBOARD_SIZE;
-  }
-
   // Assigned here for testing purposes
   this.boardInstance = new Gameboard(gameBoardSize);
   this.playersInstance = new Players(player1, player2);
