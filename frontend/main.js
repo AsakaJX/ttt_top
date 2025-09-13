@@ -48,7 +48,14 @@ function reDrawBoard() {
       cell.textContent = item;
       cell.setAttribute('class', 'gameboard-cell');
       cell.setAttribute('id', `${lineCounter}-${cellCounter}`);
-      cell.addEventListener('click', handleCellClick);
+      // cell.addEventListener('click', handleCellClick);
+      if (item !== null) {
+        cell.setAttribute('class', cell.getAttribute('class') + ' marked');
+      }
+      const cellGhostInput = document.createElement('span');
+      cellGhostInput.textContent =
+        game.playersInstance.playersArray[game.currentPlayerIndex].mark;
+      cell.appendChild(cellGhostInput);
       gameboard.appendChild(cell);
       cellCounter++;
     }
@@ -56,13 +63,19 @@ function reDrawBoard() {
   }
 }
 
+gameboard.addEventListener('click', handleCellClick);
+
 function updateGameResult(text) {
   const result = document.querySelector('#game-result');
   result.textContent = text;
 }
 
 function handleCellClick(event) {
-  const target = event.target;
+  let target = event.target;
+  if (String(target.tagName).toLowerCase() === 'span') {
+    target = target.parentNode;
+  }
+
   const [lineNumber, cellNumber] = target.getAttribute('id').split('-');
 
   const makeMoveResult = game.makeMove(lineNumber, cellNumber);

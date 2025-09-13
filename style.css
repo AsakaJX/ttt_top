@@ -104,6 +104,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   padding: 0.5rem;
 
@@ -113,6 +114,17 @@ main {
 
   font-size: 4rem;
   cursor: default;
+}
+
+.gameboard-cell > span {
+  position: absolute;
+  color: transparent;
+  user-select: none;
+  text-align: center;
+}
+
+.gameboard-cell:hover:not(.marked) > span {
+  color: var(--other);
 }
 
 #game-result {
