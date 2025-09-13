@@ -5,17 +5,21 @@ if (!DEBUG) {
 }
 
 function Gameboard(size = 3) {
-  let line = [];
-  for (let i = 0; i < size; i++) {
-    // line.push(i);
-    line.push(null);
-  }
+  this.initialize = function () {
+    let line = [];
+    for (let i = 0; i < size; i++) {
+      // line.push(i);
+      line.push(null);
+    }
 
-  this.board = [];
-  for (let i = 0; i < size; i++) {
-    // line = line.map((x) => x + i);
-    this.board.push([...line]);
-  }
+    this.board = [];
+    for (let i = 0; i < size; i++) {
+      // line = line.map((x) => x + i);
+      this.board.push([...line]);
+    }
+  };
+
+  this.initialize();
 
   this.getVertical = function (column) {
     const result = [];
@@ -73,9 +77,13 @@ export function Game(player1, player2, gameBoardSize = 3) {
   this.playersInstance = new Players(player1, player2);
 
   // 0 - first player
-  this.currentPlayerIndex = 0;
-  this.winner = null;
-  this.roundCounter = 0;
+  this.initialize = function () {
+    this.currentPlayerIndex = 0;
+    this.winner = null;
+    this.roundCounter = 0;
+  };
+
+  this.initialize();
 
   this.isWinningPosition = function () {
     for (let i = 0; i < this.boardInstance.board.length; i++) {

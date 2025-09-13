@@ -148,3 +148,30 @@ main {
 a {
   color: var(--accent);
 }
+
+#gameboard-controls {
+  margin-top: 2%;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+
+#gameboard-controls-clear {
+  padding: 0.5rem;
+  width: 50%;
+
+  background-color: transparent;
+  border: 0;
+
+  background-color: var(--other-highlighted);
+  border-radius: 10px;
+  border: 1px solid var(--accent-background);
+  color: rgb(242, 242, 255);
+  box-shadow: var(--shadow);
+}
+
+#gameboard-controls-clear:hover {
+  cursor: pointer;
+}

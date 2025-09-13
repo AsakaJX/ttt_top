@@ -95,3 +95,15 @@ function handleCellClick(event) {
     );
   }
 }
+
+// Controls
+
+const clearBtn = document.querySelector('#gameboard-controls-clear');
+clearBtn.addEventListener('click', handleGameboardClear);
+
+function handleGameboardClear(event) {
+  game.boardInstance.initialize();
+  game.initialize();
+  reDrawBoard();
+  updateGameResult('You can start placing markers!');
+}
